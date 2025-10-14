@@ -1,0 +1,50 @@
+﻿@model IEnumerable<CineWeb.Models.Genero>
+
+@{
+    ViewData["Title"] = "Géneros";
+}
+
+<h1>Géneros</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Nuevo</a>
+</p>
+
+<table class="table">
+    <thead>
+    <th>Películas</th>
+        <tr>
+            <th>@Html.DisplayNameFor(m => m.Nombre)</th>
+            <th>@Html.DisplayNameFor(m => m.Descripcion)</th>
+            <th>Películas</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Peliculas" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info">
+                        Ver películas
+                    </a>
+                </td>
+
+                <td>@Html.DisplayFor(_ => item.Nombre)</td>
+                <td>@Html.DisplayFor(_ => item.Descripcion)</td>
+
+                <td>
+                    <a asp-action="Peliculas" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info">
+                        Ver películas
+                    </a>
+                </td>
+
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

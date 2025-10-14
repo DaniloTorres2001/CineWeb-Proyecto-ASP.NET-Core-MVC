@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# CS8620: El argumento no se puede usar para el parámetro debido a las diferencias en la nulabilidad de los tipos de referencia.
+dotnet_diagnostic.CS8620.severity = suggestion
