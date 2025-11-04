@@ -32,7 +32,6 @@ Relación adicional:
 
 ## 🧠 Funcionalidades
 
-### Entrega 1
 ✅ CRUD completo para:
 - Películas  
 - Géneros  
@@ -47,6 +46,26 @@ Relación adicional:
 
 ✅ Soporte de imágenes (opcional):
 - Las películas pueden incluir una imagen almacenada en `/wwwroot/images/`.
+
+✅ Filtros y búsqueda avanzada:
+- Búsqueda por título (q).
+- Filtros por género, actor y director (checkboxes).
+- Filtros aplicados sin recargar toda la página.
+- Contadores de películas en cada módulo (géneros, actores, directores).
+
+✅ Subida y visualización de imágenes:
+- En la creación y edición de películas se puede cargar una imagen (IFormFile).
+- Las imágenes se almacenan en /wwwroot/imagenes/.
+- Si se reemplaza la imagen, la anterior se elimina automáticamente del servidor.
+
+✅ Paginación
+- Paginación funcional en la vista de películas (y extensible a otros módulos).
+
+✅ Extensibilidad
+Código preparado para futuras implementaciones como:
+- Calificaciones y comentarios de usuarios.
+- Autenticación y roles.
+- Paginación global.
 
 ---
 
