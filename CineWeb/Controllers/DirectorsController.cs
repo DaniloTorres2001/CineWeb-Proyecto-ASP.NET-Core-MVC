@@ -18,44 +18,73 @@ namespace CineWeb.Controllers
         {
             _context = context;
         }
-        public async Task<IActionResult> Peliculas(int id)
+        // /Directors/Peliculas/5?q=matrix
+        public async Task<IActionResult> Peliculas(int id, string? q)
         {
-            var director = await _context.Directores.FindAsync(id);
+            var director = await _context.Directores
+                .AsNoTracking()
+                .FirstOrDefaultAsync(d => d.Id == id);
             if (director == null) return NotFound();
 
-            var pelis = await _context.Peliculas
-                .Where(p => p.DirectorId == id)
-                .Include(p => p.Genero)
+            IQueryable<Pelicula> pelis = _context.Peliculas
+                .AsNoTracking()
+                .Where(p => p.DirectorId == id);
+
+            if (!string.IsNullOrWhiteSpace(q))
+            {
+                pelis = pelis.Where(p => p.Titulo.Contains(q));
+            }
+            pelis = pelis.Include(p => p.Genero);
+
+            var lista = await pelis
+                .OrderByDescending(p => p.FechaEstreno)
                 .ToListAsync();
 
             ViewBag.DirectorNombre = director.Nombre;
             ViewBag.DirectorId = director.Id;
-            return View(pelis); // Views/Directores/Peliculas.cshtml
+            ViewData["q"] = q;
+
+            return View(lista);
         }
 
+
+
         // GET: Directors
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string q)
         {
-            return View(await _context.Directores.ToListAsync());
+            var query = _context.Directores.AsNoTracking();
+
+            if (!string.IsNullOrWhiteSpace(q))
+                query = query.Where(d => d.Nombre.Contains(q));
+
+            var counts = await _context.Peliculas
+                .AsNoTracking()
+                .GroupBy(p => p.DirectorId)
+                .Select(g => new { DirectorId = g.Key, Cnt = g.Count() })
+                .ToDictionaryAsync(x => x.DirectorId, x => x.Cnt);
+
+            ViewBag.PeliculasPorDirector = counts;
+            ViewData["q"] = q;
+
+            var lista = await query.OrderBy(d => d.Nombre).ToListAsync();
+            return View(lista);
         }
 
         // GET: Directors/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var director = await _context.Directores
+                .AsNoTracking()
+                .Include(d => d.Peliculas) // colección de Películas del director
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (director == null)
-            {
-                return NotFound();
-            }
+
+            if (director == null) return NotFound();
 
             return View(director);
         }
+
 
         // GET: Directors/Create
         public IActionResult Create()

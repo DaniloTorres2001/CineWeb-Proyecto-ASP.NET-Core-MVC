@@ -18,11 +18,29 @@ namespace CineWeb.Controllers
         {
             _context = context;
         }
-        // GET: Generoes
-        public async Task<IActionResult> Index()
+        // GET: Generoes      
+        public async Task<IActionResult> Index(string q)
         {
-            return View(await _context.Generos.ToListAsync());
+            var query = _context.Generos.AsNoTracking();
+
+            if (!string.IsNullOrWhiteSpace(q))
+                query = query.Where(g => g.Nombre.Contains(q));
+
+            var counts = await _context.Peliculas
+                .AsNoTracking()
+                .GroupBy(p => p.GeneroId)
+                .Select(g => new { GeneroId = g.Key, Cnt = g.Count() })
+                .ToDictionaryAsync(x => x.GeneroId, x => x.Cnt);
+
+            ViewBag.PeliculasPorGenero = counts;
+
+            var lista = await query
+                .OrderBy(g => g.Nombre)
+                .ToListAsync();
+
+            return View(lista);
         }
+
 
         // GET: Generoes/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -44,7 +62,6 @@ namespace CineWeb.Controllers
             return View(genero);
         }
 
-        // Navegación: /Generoes/Peliculas/5  -> lista pelis de un género
         public async Task<IActionResult> Peliculas(int id)
         {
             var genero = await _context.Generos.FindAsync(id);
@@ -57,7 +74,7 @@ namespace CineWeb.Controllers
 
             ViewBag.GeneroNombre = genero.Nombre;
             ViewBag.GeneroId = genero.Id;
-            return View(pelis); // crea Views/Generoes/Peliculas.cshtml
+            return View(pelis);
         }
 
         // GET: Generoes/Create

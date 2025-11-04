@@ -1,71 +1,229 @@
-﻿@model IEnumerable<CineWeb.Models.Pelicula>
+﻿@using CineWeb.Models
+@using CineWeb.ViewModels
+@model IEnumerable<Pelicula>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Películas";
+    var filtros = ViewBag.Filtros as PeliculasFiltrosVM ?? new PeliculasFiltrosVM();
+    string q = filtros.Q ?? Context.Request.Query["q"];
+    int total = Model?.Count() ?? 0;
+
+    string CheckedIf(HashSet<int> set, int id) => set.Contains(id) ? "checked" : "";
 }
 
-<h1>Index</h1>
+<div class="row g-4">
+    <!-- Sidebar de filtros -->
+    <aside class="col-12 col-lg-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <h2 class="h5 d-flex align-items-center gap-2 mb-3">
+                    <i class="bi bi-funnel"></i> Filtros
+                </h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Titulo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Sinopsis)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Duracion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FechaEstreno)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImagenRuta)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Genero)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Director)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Titulo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Sinopsis)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Duracion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FechaEstreno)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImagenRuta)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Genero.Nombre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Director.Nombre)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+                <form method="get" role="search" id="filtersForm">
+                    <!-- Búsqueda por título -->
+                    <div class="mb-3">
+                        <label class="form-label">Buscar por título</label>
+                        <div class="input-group">
+                            <input type="search" class="form-control" name="q" value="@q" placeholder="Ej: Alien">
+                            <button class="btn btn-outline-light" type="submit"><i class="bi bi-search"></i></button>
+                        </div>
+                    </div>
+
+                    <hr class="text-secondary" />
+
+                    <!-- Géneros -->
+                    <div class="mb-3">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <label class="form-label mb-0"><i class="bi bi-tags"></i> Géneros</label>
+                            <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#filterGeneros">
+                                <i class="bi bi-chevron-down"></i>
+                            </button>
+                        </div>
+                        <div class="collapse show" id="filterGeneros">
+                            <div class="mt-2" style="max-height: 220px; overflow:auto;">
+                                @foreach (var g in filtros.Generos)
+                                {
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="generos" value="@g.Id" id="gen_@g.Id" @CheckedIf(filtros.SelGeneros, g.Id) />
+                                        <label class="form-check-label" for="gen_@g.Id">@g.Nombre</label>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Actores -->
+                    <div class="mb-3">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <label class="form-label mb-0"><i class="bi bi-people"></i> Actores</label>
+                            <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#filterActores">
+                                <i class="bi bi-chevron-down"></i>
+                            </button>
+                        </div>
+                        <div class="collapse show" id="filterActores">
+                            <div class="mt-2" style="max-height: 220px; overflow:auto;">
+                                @foreach (var a in filtros.Actores)
+                                {
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="actores" value="@a.Id" id="act_@a.Id" @CheckedIf(filtros.SelActores, a.Id) />
+                                        <label class="form-check-label" for="act_@a.Id">@a.Nombre</label>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Directores -->
+                    <div class="mb-3">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <label class="form-label mb-0"><i class="bi bi-person-workspace"></i> Directores</label>
+                            <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#filterDirectores">
+                                <i class="bi bi-chevron-down"></i>
+                            </button>
+                        </div>
+                        <div class="collapse show" id="filterDirectores">
+                            <div class="mt-2" style="max-height: 220px; overflow:auto;">
+                                @foreach (var d in filtros.Directores)
+                                {
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="directores" value="@d.Id" id="dir_@d.Id" @CheckedIf(filtros.SelDirectores, d.Id) />
+                                        <label class="form-check-label" for="dir_@d.Id">@d.Nombre</label>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-primary w-100" type="submit"><i class="bi bi-sliders"></i> Aplicar</button>
+                        <a class="btn btn-outline-secondary w-100" asp-action="Index"><i class="bi bi-eraser"></i> Limpiar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Resultados -->
+    <section class="col-12 col-lg-9">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h1 class="h4 mb-0">Películas</h1>
+            <div class="d-flex align-items-center gap-3">
+                <span class="text-muted">@total resultado@(total == 1 ? "" : "s")</span>
+                <a class="btn btn-primary" asp-action="Create"><i class="bi bi-plus-circle"></i> Nueva</a>
+            </div>
+        </div>
+
+        @if (!Model.Any())
+        {
+            <div class="alert alert-info">No se encontraron películas con los filtros aplicados.</div>
+        }
+        else
+        {
+            <div class="row g-4">
+                @foreach (var p in Model)
+                {
+                    var poster = string.IsNullOrWhiteSpace(p.ImagenRuta) ? "/images/no-poster.png" : p.ImagenRuta;
+                    <div class="col-12 col-sm-6 col-md-4">
+                        <div class="card card-movie h-100">
+                            <img src="@poster" alt="@p.Titulo" class="poster" />
+                            <div class="card-body">
+                                <h2 class="h6 mb-2">@p.Titulo</h2>
+                                <div class="small meta mb-2">
+                                    <span class="me-2"><i class="bi bi-tags"></i> @p.Genero?.Nombre</span>
+                                    <span class="me-2"><i class="bi bi-person-workspace"></i> @p.Director?.Nombre</span><br />
+                                    <span class="me-2"><i class="bi bi-clock"></i> @p.Duracion min</span>
+                                    @if (p.FechaEstreno.HasValue)
+                                    {
+                                        <span><i class="bi bi-calendar3"></i> @p.FechaEstreno.Value.ToString("yyyy")</span>
+                                    }
+                                </div>
+                                @if (!string.IsNullOrWhiteSpace(p.Sinopsis))
+                                {
+                                    <p class="small text-muted mb-0">
+                                        @p.Sinopsis.Substring(0, Math.Min(120, p.Sinopsis.Length))@(p.Sinopsis.Length > 120 ? "..." : "")
+                                    </p>
+                                }
+                            </div>
+                            <div class="card-footer bg-transparent border-0 d-flex gap-2">
+                                <a class="btn btn-sm btn-outline-light" asp-action="Details" asp-route-id="@p.Id">
+                                    <i class="bi bi-info-circle"></i> Ver
+                                </a>
+                                <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-id="@p.Id">
+                                    <i class="bi bi-pencil-square"></i> Editar
+                                </a>
+                                <a class="btn btn-sm btn-outline-danger ms-auto" asp-action="Delete" asp-route-id="@p.Id">
+                                    <i class="bi bi-trash"></i> Borrar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </section>
+    <!-- Paginación -->
+    <nav class="mt-4" aria-label="Paginación de películas">
+        @{            
+            int current = filtros.Page;
+            int last = filtros.TotalPages;
+            string BaseQS(int p) => $"?{filtros.QueryBase}&page={p}";
+        }
+        @if (last > 1)
+        {
+            <ul class="pagination justify-content-center flex-wrap">
+                <li class="page-item @(current == 1 ? "disabled" : "")">
+                    <a class="page-link" href="@BaseQS(1)" aria-label="Primera">&laquo;&laquo;</a>
+                </li>
+                <li class="page-item @(current == 1 ? "disabled" : "")">
+                    <a class="page-link" href="@BaseQS(current - 1)" aria-label="Anterior">&laquo;</a>
+                </li>
+
+                @{
+                    // Ventana simple (como ejemplo)
+                    int window = 2;
+                    int start = Math.Max(1, current - window);
+                    int end = Math.Min(last, current + window);
+                }
+
+                @if (start > 1)
+                {
+                    <li class="page-item"><a class="page-link" href="@BaseQS(1)">1</a></li>
+                    @if (start > 2)
+                    {
+                        <li class="page-item disabled"><span class="page-link">…</span></li>
+                    }
+                }
+
+                @for (int i = start; i <= end; i++)
+                {
+                    <li class="page-item @(i == current ? "active" : "")">
+                        <a class="page-link" href="@BaseQS(i)">@i</a>
+                    </li>
+                }
+
+                @if (end < last)
+                {
+                    if (end < last - 1)
+                    {
+                        <li class="page-item disabled"><span class="page-link">…</span></li>
+                    }
+                    <li class="page-item"><a class="page-link" href="@BaseQS(last)">@last</a></li>
+                }
+
+                <li class="page-item @(current == last ? "disabled" : "")">
+                    <a class="page-link" href="@BaseQS(current + 1)" aria-label="Siguiente">&raquo;</a>
+                </li>
+                <li class="page-item @(current == last ? "disabled" : "")">
+                    <a class="page-link" href="@BaseQS(last)" aria-label="Última">&raquo;&raquo;</a>
+                </li>
+            </ul>
+        }
+    </nav>
+
+</div>
+
+@section Scripts {
+    <script>
+    </script>
 }
-    </tbody>
-</table>

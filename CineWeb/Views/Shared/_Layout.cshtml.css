@@ -1,48 +1,130 @@
-﻿/* Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
-
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+﻿/* --- Bootstrap dark overrides globales --- */
+:root {
+    /* Paleta cine */
+    --movies-bg: #0b0f17;
+    --movies-grad-1: #0f1a35;
+    --movies-grad-2: #1b2b5a;
+    --text-main: #e9eef6;
+    --text-muted: #a8b3cf;
+    /* Bootstrap variables (forzamos modo oscuro) */
+    --bs-body-bg: var(--movies-bg);
+    --bs-body-color: var(--text-main);
+    --bs-emphasis-color: var(--text-main);
+    --bs-border-color: #253255;
+    --bs-card-bg: #0d1525;
+    --bs-card-color: var(--text-main);
+    --bs-secondary-color: var(--text-muted);
 }
 
-a {
-  color: #0077cc;
+html, body {
+    background-color: var(--bs-body-bg) !important;
+    color: var(--bs-body-color) !important;
 }
 
+/* Navbar degradado oscuro */
+.bg-movies {
+    background: linear-gradient(90deg, var(--movies-grad-1), var(--movies-grad-2));
+}
+
+.navbar.bg-movies .navbar-brand,
+.navbar.bg-movies .nav-link {
+    color: #fff !important;
+    opacity: .95;
+}
+
+    .navbar.bg-movies .nav-link:hover,
+    .navbar.bg-movies .nav-link:focus {
+        opacity: 1;
+    }
+
+/* Evitar bloques blancos por defecto */
+.container, main, .section, .content, .page {
+    background: transparent !important;
+}
+
+/* Forzar componentes oscuros */
+.card, .list-group, .table, .modal-content {
+    background-color: var(--bs-card-bg) !important;
+    color: var(--bs-card-color) !important;
+    border-color: var(--bs-border-color) !important;
+}
+
+    .table thead th {
+        color: var(--text-muted);
+        border-color: var(--bs-border-color);
+    }
+
+/* Clases claras → a oscuro/transparente */
+.bg-white, .bg-light, .bg-body, .bg-transparent {
+    background-color: transparent !important;
+    color: var(--bs-body-color) !important;
+}
+
+/* Formularios oscuros */
+.form-control, .form-select {
+    background-color: #121b2e !important;
+    color: var(--text-main) !important;
+    border: 1px solid #253255 !important;
+}
+
+    .form-control::placeholder {
+        color: #97a5c0;
+    }
+
+/* Botones */
 .btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    background-color: #2d5bff;
+    border-color: #2d5bff;
 }
 
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+.btn-outline-light {
+    border-color: #e9eef6;
+    color: #e9eef6;
 }
 
-.border-top {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5;
+.btn-outline-secondary {
+    color: var(--text-muted);
+    border-color: #3b4a72;
 }
 
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+/* Tarjetas de película */
+.card-movie {
+    border: 0;
+    background: #0d1525;
+    color: var(--text-main);
+    box-shadow: 0 8px 24px rgba(0,0,0,.25);
+    transition: transform .2s ease, box-shadow .2s ease;
 }
 
-button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
+    .card-movie:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 14px 36px rgba(0,0,0,.35);
+    }
+
+    .card-movie .poster {
+        width: 100%;
+        height: 360px;
+        object-fit: cover;
+        border-radius: .5rem .5rem 0 0;
+        background: #10192e;
+    }
+
+    .card-movie .meta {
+        color: var(--text-muted);
+    }
+
+/* Validación MVC */
+.field-validation-error {
+    color: #ff6b6b;
 }
 
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px;
+.input-validation-error {
+    border-color: #ff6b6b !important;
+}
+
+/* Footer */
+footer {
+    background: transparent;
+    color: var(--text-muted);
+    border-color: var(--bs-border-color);
 }

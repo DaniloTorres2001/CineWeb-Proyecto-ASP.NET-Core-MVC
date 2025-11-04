@@ -1,88 +1,55 @@
 ﻿@model CineWeb.Models.Pelicula
-
 @{
-    ViewData["Title"] = "Detalles de Película";
+    ViewData["Title"] = "Detalles";
+    var poster = string.IsNullOrWhiteSpace(Model.ImagenRuta) ? "/images/no-poster.png" : Model.ImagenRuta;
 }
 
-<h1>Detalles de Película</h1>
-
-<div>
-    <h4>Pelicula</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">Título</dt>
-        <dd class="col-sm-10">@Model.Titulo</dd>
-
-        <dt class="col-sm-2">Sinopsis</dt>
-        <dd class="col-sm-10">@Model.Sinopsis</dd>
-
-        <dt class="col-sm-2">Duración</dt>
-        <dd class="col-sm-10">@Model.Duracion min</dd>
-
-        <dt class="col-sm-2">Fecha de Estreno</dt>
-        @(Model.FechaEstreno?.ToShortDateString() ?? "Sin fecha")
-
-        <dt class="col-sm-2">Imagen</dt>
-        <dd class="col-sm-10">
-            @if (!string.IsNullOrEmpty(Model.ImagenRuta))
-            {
-                <img src="@Model.ImagenRuta" alt="@Model.Titulo" style="max-height:200px; border-radius:8px;" />
-            }
-            else
-            {
-                <span>—</span>
-            }
-        </dd>
-
-        <dt class="col-sm-2">Género</dt>
-        <dd class="col-sm-10">
-            @if (Model.Genero != null)
-            {
-                <a asp-controller="Generoes" asp-action="Details" asp-route-id="@Model.GeneroId">
-                    @Model.Genero.Nombre
-                </a>
-            }
-            else
-            {
-                <span>Sin género</span>
-            }
-        </dd>
-
-        <dt class="col-sm-2">Director</dt>
-        <dd class="col-sm-10">
-            @if (Model.Director != null)
-            {
-                <a asp-controller="Directores" asp-action="Details" asp-route-id="@Model.DirectorId">
-                    @Model.Director.Nombre
-                </a>
-            }
-            else
-            {
-                <span>Sin director</span>
-            }
-        </dd>
-
-        <dt class="col-sm-2">Actores</dt>
-        <dd class="col-sm-10">
-            @if (Model.Actores != null && Model.Actores.Any())
-            {
-                @foreach (var pa in Model.Actores)
-                {
-                    <a asp-controller="Actores" asp-action="Details" asp-route-id="@pa.ActorId">
-                        @pa.Actor?.Nombre
-                    </a>
-                    @(pa.Equals(Model.Actores.Last()) ? "" : ", ")
-                }
-            }
-            else
-            {
-                <span>Sin actores asociados</span>
-            }
-        </dd>
-    </dl>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Detalles de película</h1>
+    <div class="d-flex gap-2">
+        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Id"><i class="bi bi-pencil-square"></i> Editar</a>
+        <a class="btn btn-outline-secondary" asp-action="Index"><i class="bi bi-arrow-left"></i> Volver</a>
+    </div>
 </div>
 
-<div class="mt-3">
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Editar</a>
-    <a asp-action="Index" class="btn btn-secondary">Volver a la lista</a>
+<div class="row g-4">
+    <div class="col-md-4">
+        <img src="@poster" alt="@Model.Titulo" class="img-fluid rounded border" />
+    </div>
+    <div class="col-md-8">
+        <h2 class="h4">@Model.Titulo</h2>
+        @if (!string.IsNullOrWhiteSpace(Model.Sinopsis))
+        {
+            <p class="text-muted">@Model.Sinopsis</p>
+        }
+
+        <dl class="row">
+            <dt class="col-sm-4">Género</dt>
+            <dd class="col-sm-8">@Model.Genero?.Nombre</dd>
+
+            <dt class="col-sm-4">Director</dt>
+            <dd class="col-sm-8">@Model.Director?.Nombre</dd>
+
+            <dt class="col-sm-4">Duración</dt>
+            <dd class="col-sm-8">@Model.Duracion min</dd>
+
+            <dt class="col-sm-4">Estreno</dt>
+            <dd class="col-sm-8">@Model.FechaEstreno?.ToString("dd/MM/yyyy")</dd>
+        </dl>
+
+        <h3 class="h6">Actores</h3>
+        @if (Model.Actores != null && Model.Actores.Any())
+        {
+            <ul class="list-inline">
+                @foreach (var a in Model.Actores.Select(x => x.Actor).Where(a => a != null))
+                {
+                    <li class="list-inline-item badge bg-secondary">@a!.Nombre</li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p class="text-muted">Sin actores asignados.</p>
+        }
+    </div>
 </div>

@@ -1,53 +1,73 @@
 ﻿@model IEnumerable<CineWeb.Models.Director>
-
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Directores";
+    string q = Context.Request.Query["q"];
+    var counts = ViewBag.PeliculasPorDirector as IDictionary<int, int> ?? new Dictionary<int, int>();
 }
 
-<h1>Index</h1>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h4 mb-0 text-light"><i class="bi bi-person-workspace"></i> Directores</h1>
+    <a asp-action="Create" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i> Nuevo director
+    </a>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-    <th>Películas</th>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nombre)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Nacionalidad)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FechaNacimiento)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nombre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nacionalidad)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FechaNacimiento)
-            </td>
-            <td>
-                <a asp-action="Peliculas" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info">
-                    Ver películas
-                </a>
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+<form method="get" class="mb-3" role="search">
+    <div class="input-group">
+        <input type="search"
+               name="q"
+               value="@q"
+               class="form-control bg-dark text-light border-secondary"
+               placeholder="Buscar director por nombre…">
+        <button class="btn btn-outline-light" type="submit" title="Buscar">
+            <i class="bi bi-search"></i>
+        </button>
+        <a asp-action="Index" class="btn btn-outline-secondary" title="Limpiar">
+            <i class="bi bi-eraser"></i>
+        </a>
+    </div>
+</form>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info bg-transparent text-info border border-info-subtle">
+        No se encontraron directores.
+    </div>
 }
-    </tbody>
-</table>
+else
+{
+    <div class="row g-4">
+        @foreach (var d in Model.OrderBy(x => x.Nombre))
+        {
+            var peliculasCount = counts.TryGetValue(d.Id, out var c) ? c : 0;
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="card h-100" style="background:#1b1b1b;border:1px solid #2a2a2a;">
+                    <div class="card-body">
+                        <h2 class="h6 text-light mb-1">
+                            <i class="bi bi-person-workspace"></i> @d.Nombre
+                        </h2>
+                        <div class="small text-muted">
+                            <span><i class="bi bi-flag"></i> @(string.IsNullOrWhiteSpace(d.Nacionalidad) ? "-" : d.Nacionalidad)</span>
+                            @if (d.FechaNacimiento.HasValue)
+                            {
+                                <span class="ms-2"><i class="bi bi-calendar3"></i> @d.FechaNacimiento.Value.ToString("yyyy-MM-dd")</span>
+                            }
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent border-0 d-flex align-items-center gap-2">
+                        <span class="badge bg-info text-dark" title="Películas">@peliculasCount</span>
+                        <a class="btn btn-sm btn-outline-light ms-auto" asp-action="Details" asp-route-id="@d.Id">
+                            <i class="bi bi-info-circle"></i> Detalles
+                        </a>
+                        <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-id="@d.Id">
+                            <i class="bi bi-pencil-square"></i>
+                        </a>
+                        <a class="btn btn-sm btn-outline-danger" asp-action="Delete" asp-route-id="@d.Id">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

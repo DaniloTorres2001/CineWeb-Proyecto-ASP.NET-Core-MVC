@@ -1,33 +1,25 @@
 ﻿@model CineWeb.Models.Genero
-
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Eliminar género";
 }
 
-<h1>Delete</h1>
+<h1 class="h4 mb-3 text-danger"><i class="bi bi-trash"></i> Eliminar género</h1>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Genero</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nombre)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nombre)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Descripcion)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Descripcion)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+<div class="alert alert-warning">
+    ¿Seguro que deseas eliminar el género <strong>@Model.Nombre</strong>?
+    @if (Model.Peliculas?.Any() == true)
+    {
+        <div class="mt-2">
+            <i class="bi bi-exclamation-triangle"></i> Tiene películas asociadas
+            (@Model.Peliculas.Count). Deberás reasignarlas o eliminar la relación según tus reglas.
+        </div>
+    }
 </div>
+
+<form asp-action="Delete" method="post" class="d-inline">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">
+        <i class="bi bi-check2-circle"></i> Sí, eliminar
+    </button>
+    <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
+</form>

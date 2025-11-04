@@ -1,75 +1,88 @@
 ﻿@model CineWeb.Models.Pelicula
-
 @{
-    ViewData["Title"] = "Crear Película";
+    ViewData["Title"] = "Nueva película";
 }
 
-<h1>Crear Película</h1>
+<h1 class="h3 mb-3">Nueva película</h1>
 
-<hr />
-<div class="row">
-    <div class="col-md-6">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<form asp-action="Create" method="post" enctype="multipart/form-data" class="row g-3">
+    <div class="col-md-8">
+        <div class="mb-3">
+            <label asp-for="Titulo" class="form-label"></label>
+            <input asp-for="Titulo" class="form-control" />
+            <span asp-validation-for="Titulo" class="text-danger"></span>
+        </div>
 
-            <div class="form-group mb-3">
-                <label asp-for="Titulo" class="form-label"></label>
-                <input asp-for="Titulo" class="form-control" />
-                <span asp-validation-for="Titulo" class="text-danger"></span>
-            </div>
+        <div class="mb-3">
+            <label asp-for="Sinopsis" class="form-label"></label>
+            <textarea asp-for="Sinopsis" class="form-control" rows="4"></textarea>
+            <span asp-validation-for="Sinopsis" class="text-danger"></span>
+        </div>
 
-            <div class="form-group mb-3">
-                <label asp-for="Sinopsis" class="form-label"></label>
-                <input asp-for="Sinopsis" class="form-control" />
-                <span asp-validation-for="Sinopsis" class="text-danger"></span>
-            </div>
-
-            <div class="form-group mb-3">
+        <div class="row">
+            <div class="col-md-4 mb-3">
                 <label asp-for="Duracion" class="form-label"></label>
                 <input asp-for="Duracion" class="form-control" />
                 <span asp-validation-for="Duracion" class="text-danger"></span>
             </div>
-
-            <div class="form-group mb-3">
+            <div class="col-md-4 mb-3">
                 <label asp-for="FechaEstreno" class="form-label"></label>
-                <input asp-for="FechaEstreno" type="date" class="form-control" />
+                <input asp-for="FechaEstreno" class="form-control" type="date" />
                 <span asp-validation-for="FechaEstreno" class="text-danger"></span>
             </div>
+        </div>
 
-            <div class="form-group mb-3">
-                <label asp-for="ImagenRuta" class="form-label"></label>
-                <input asp-for="ImagenRuta" class="form-control" />
-                <span asp-validation-for="ImagenRuta" class="text-danger"></span>
-            </div>
-
-            <div class="form-group mb-3">
-                <label asp-for="GeneroId" class="form-label"></label>
-                <select asp-for="GeneroId" class="form-control" asp-items="ViewBag.GeneroId"></select>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label asp-for="GeneroId" class="form-label">Género</label>
+                <select asp-for="GeneroId" asp-items="ViewBag.GeneroId" class="form-select"></select>
                 <span asp-validation-for="GeneroId" class="text-danger"></span>
             </div>
-
-            <div class="form-group mb-3">
-                <label asp-for="DirectorId" class="form-label"></label>
-                <select asp-for="DirectorId" class="form-control" asp-items="ViewBag.DirectorId"></select>
+            <div class="col-md-6 mb-3">
+                <label asp-for="DirectorId" class="form-label">Director</label>
+                <select asp-for="DirectorId" asp-items="ViewBag.DirectorId" class="form-select"></select>
                 <span asp-validation-for="DirectorId" class="text-danger"></span>
             </div>
+        </div>
 
-            <!-- 🔥 Multiselect de Actores (nombre 'actorIds' para que lo reciba el action) -->
-            <div class="form-group mb-4">
-                <label class="form-label">Actores</label>
-                <select asp-items="ViewBag.ActorIds" multiple class="form-control" name="actorIds"></select>
-            </div>
+        <div class="mb-3">
+            <label class="form-label">Actores</label>
+            <select class="form-select" asp-items="(MultiSelectList)ViewBag.ActorIds" name="actorIds" multiple size="8"></select>
+        </div>
 
-            <div class="form-group">
-                <input type="submit" value="Crear" class="btn btn-primary" />
-                <a asp-action="Index" class="btn btn-secondary">Volver</a>
-            </div>
-        </form>
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> Guardar</button>
+            <a class="btn btn-outline-secondary" asp-action="Index"><i class="bi bi-arrow-left"></i> Volver</a>
+        </div>
     </div>
-</div>
+
+    <div class="col-md-4">
+        <div class="mb-2 fw-semibold">Póster</div>
+        <div class="mb-3">
+            <img id="posterPreview" src="/images/no-poster.png" class="img-fluid rounded border" alt="Poster preview" />
+        </div>
+        <div class="mb-3">
+            <input asp-for="ImagenArchivo" class="form-control" type="file" accept=".jpg,.jpeg,.png,.webp" />
+            <small class="text-muted d-block">Formatos: JPG, PNG, WEBP · Máx 2MB</small>
+            <span asp-validation-for="ImagenArchivo" class="text-danger"></span>
+        </div>
+    </div>
+</form>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script>
+        (function(){
+            const input = document.getElementById("ImagenArchivo") || document.querySelector('input[name="ImagenArchivo"]');
+            const img = document.getElementById("posterPreview");
+            if (input && img) {
+                input.addEventListener("change", (e) => {
+                    const f = e.target.files?.[0];
+                    if (!f) return;
+                    const url = URL.createObjectURL(f);
+                    img.src = url;
+                });
+            }
+        })();
+    </script>
 }

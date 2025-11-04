@@ -1,36 +1,77 @@
 ﻿@model CineWeb.Models.Actor
-
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalle del actor";
+    var peliculas = Model.Peliculas?.Select(pa => pa.Pelicula)
+                                   ?.Where(p => p != null)
+                                   ?.Distinct()
+                                   ?.OrderByDescending(p => p!.FechaEstreno)
+                                   ?.ToList() ?? new List<CineWeb.Models.Pelicula>();
 }
 
-<h1>Details</h1>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h4 mb-0 text-light"><i class="bi bi-person"></i> @Model.Nombre</h1>
+    <div class="d-flex gap-2">
+        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Id">
+            <i class="bi bi-pencil-square"></i> Editar
+        </a>
+        <a class="btn btn-outline-secondary" asp-action="Index">Volver</a>
+    </div>
+</div>
 
-<div>
-    <h4>Actor</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nombre)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nombre)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Biografia)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Biografia)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FechaNacimiento)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FechaNacimiento)
-        </dd>
-    </dl>
+<div class="card mb-4" style="background:#1b1b1b;border:1px solid #2a2a2a;">
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-3 text-light">Nombre</dt>
+            <dd class="col-sm-9 text-light">@Model.Nombre</dd>
+
+            <dt class="col-sm-3 text-light">Fecha de nacimiento</dt>
+            <dd class="col-sm-9 text-muted">
+                @(Model.FechaNacimiento.HasValue? Model.FechaNacimiento.Value.ToString("yyyy-MM-dd") : "-")
+            </dd>
+
+            <dt class="col-sm-3 text-light">Biografía</dt>
+            <dd class="col-sm-9 text-muted">@Model.Biografia</dd>
+        </dl>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+<h2 class="h5 text-light mb-3"><i class="bi bi-film"></i> Filmografía</h2>
+
+@if (!peliculas.Any())
+{
+    <div class="alert alert-info bg-transparent text-info border border-info-subtle">
+        Aún no hay películas asociadas a este actor.
+    </div>
+}
+else
+{
+    <div class="row g-4">
+        @foreach (var p in peliculas)
+        {
+            var poster = string.IsNullOrWhiteSpace(p!.ImagenRuta) ? "/images/no-poster.png" : p.ImagenRuta;
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="card card-movie h-100" style="background:#1b1b1b;border:1px solid #2a2a2a;">
+                    <img src="@poster" class="poster" alt="@p.Titulo" />
+                    <div class="card-body">
+                        <h3 class="h6 mb-1 text-light">@p.Titulo</h3>
+                        <div class="small text-muted">
+                            @if (p.FechaEstreno.HasValue)
+                            {
+                                <span><i class="bi bi-calendar3"></i> @p.FechaEstreno.Value.ToString("yyyy")</span>
+                            }
+                            <span class="ms-2"><i class="bi bi-clock"></i> @p.Duracion min</span>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent border-0 d-flex gap-2">
+                        <a class="btn btn-sm btn-outline-light" asp-controller="Peliculas" asp-action="Details" asp-route-id="@p.Id">
+                            <i class="bi bi-info-circle"></i> Ver
+                        </a>
+                        <a class="btn btn-sm btn-primary" asp-controller="Peliculas" asp-action="Edit" asp-route-id="@p.Id">
+                            <i class="bi bi-pencil-square"></i> Editar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

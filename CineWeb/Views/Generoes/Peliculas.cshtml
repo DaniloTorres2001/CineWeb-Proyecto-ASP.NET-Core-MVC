@@ -1,20 +1,98 @@
 ﻿@model IEnumerable<CineWeb.Models.Pelicula>
 @{
-    ViewData["Title"] = "Películas del género " + (ViewBag.GeneroNombre ?? "");
+    var generoNombre = ViewBag.GeneroNombre as string ?? "Género";
+    int generoId = ViewBag.GeneroId is int x ? x : 0;   // opcional si lo envías
+    string q = Context.Request.Query["q"];
+    ViewData["Title"] = $"Películas de {generoNombre}";
 }
-<h2>@ViewData["Title"]</h2>
-<p><a asp-action="Index">← Volver a géneros</a></p>
 
-<table class="table">
-    <thead><tr><th>Título</th><th>Director</th><th></th></tr></thead>
-    <tbody>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="d-flex align-items-center gap-2">
+        <a asp-action="Index" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Volver a géneros
+        </a>
+        <h1 class="h4 mb-0">
+            <i class="bi bi-film"></i> Películas de <span class="text-info">@generoNombre</span>
+        </h1>
+    </div>
+    <a class="btn btn-outline-light"
+       asp-controller="Peliculas" asp-action="Index"
+       asp-route-generos="@(generoId > 0 ? generoId : null)">
+        <i class="bi bi-funnel"></i> Ver en listado general
+    </a>
+</div>
+
+<form method="get" class="mb-3" role="search">
+    <input type="hidden" name="generoId" value="@(generoId > 0 ? generoId : 0)" />
+    <div class="input-group">
+        <input type="search" class="form-control" name="q" value="@q"
+               placeholder="Buscar por título dentro de @generoNombre…" />
+        <button class="btn btn-outline-light" type="submit">
+            <i class="bi bi-search"></i> Buscar
+        </button>
+        <a class="btn btn-outline-secondary"
+           asp-action="Peliculas" asp-route-generoId="@generoId">
+            <i class="bi bi-eraser"></i> Limpiar
+        </a>
+    </div>
+</form>
+
+@{
+    var total = Model?.Count() ?? 0;
+}
+
+@if (total == 0)
+{
+    <div class="alert alert-info">
+        No se encontraron películas en <strong>@generoNombre</strong>
+        @(string.IsNullOrWhiteSpace(q) ? "" : $" para la búsqueda \"{q}\"").
+    </div>
+}
+else
+{
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <span class="text-muted">@total resultado@(total == 1 ? "" : "s")</span>
+    </div>
+
+    <div class="row g-4">
         @foreach (var p in Model)
         {
-            <tr>
-                <td>@p.Titulo</td>
-                <td>@p.Director?.Nombre</td>
-                <td><a asp-controller="Peliculas" asp-action="Details" asp-route-id="@p.Id">Ver</a></td>
-            </tr>
+            var poster = string.IsNullOrWhiteSpace(p.ImagenRuta) ? "/images/no-poster.png" : p.ImagenRuta;
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="card card-movie h-100">
+                    <img src="@poster" alt="@p.Titulo" class="poster" />
+                    <div class="card-body">
+                        <h2 class="h6 mb-2">@p.Titulo</h2>
+
+                        <div class="small text-muted">
+                            <i class="bi bi-person-workspace"></i>
+                            @p.Director?.Nombre
+                            @if (p.FechaEstreno.HasValue)
+                            {
+                                <span class="ms-2"><i class="bi bi-calendar3"></i> @p.FechaEstreno.Value.ToString("yyyy")</span>
+                            }
+                            <span class="ms-2"><i class="bi bi-clock"></i> @p.Duracion min</span>
+                        </div>
+
+                        @if (!string.IsNullOrWhiteSpace(p.Sinopsis))
+                        {
+                            <p class="small text-muted mt-2 mb-0">
+                                @p.Sinopsis.Substring(0, Math.Min(110, p.Sinopsis.Length))@(p.Sinopsis.Length > 110 ? "..." : "")
+                            </p>
+                        }
+                    </div>
+                    <div class="card-footer bg-transparent border-0 d-flex gap-2">
+                        <a class="btn btn-sm btn-outline-light"
+                           asp-controller="Peliculas" asp-action="Details" asp-route-id="@p.Id">
+                            <i class="bi bi-info-circle"></i> Ver
+                        </a>
+                        <a class="btn btn-sm btn-primary"
+                           asp-controller="Peliculas" asp-action="Edit" asp-route-id="@p.Id">
+                            <i class="bi bi-pencil-square"></i> Editar
+                        </a>
+                    </div>
+                </div>
+            </div>
         }
-    </tbody>
-</table>
+    </div>
+}

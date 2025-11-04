@@ -1,25 +1,37 @@
-﻿@model ErrorViewModel
+﻿@model CineWeb.Models.ErrorViewModel
 @{
     ViewData["Title"] = "Error";
 }
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="bi bi-emoji-frown fs-1 text-danger me-3"></i>
+                        <div>
+                            <h1 class="h3 mb-0">Ups, algo salió mal</h1>
+                            <small class="text-muted">Se produjo un error al procesar tu solicitud.</small>
+                        </div>
+                    </div>
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
+                    <p>Si el problema persiste, por favor vuelve a intentarlo en unos minutos.</p>
 
-@if (Model.ShowRequestId)
-{
-    <p>
-        <strong>Request ID:</strong> <code>@Model.RequestId</code>
-    </p>
-}
+                    @if (Model?.ShowRequestId ?? false)
+                    {
+                        <div class="alert alert-secondary">
+                            <strong>Request ID:</strong> <code>@Model.RequestId</code>
+                        </div>
+                    }
 
-<h3>Development Mode</h3>
-<p>
-    Swapping to <strong>Development</strong> environment will display more detailed information about the error that occurred.
-</p>
-<p>
-    <strong>The Development environment shouldn't be enabled for deployed applications.</strong>
-    It can result in displaying sensitive information from exceptions to end users.
-    For local debugging, enable the <strong>Development</strong> environment by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>
-    and restarting the app.
-</p>
+                    <a class="btn btn-primary" asp-controller="Home" asp-action="Index">
+                        <i class="bi bi-house-door"></i> Volver al inicio
+                    </a>
+                    <a class="btn btn-outline-secondary ms-2" href="javascript:history.back()">
+                        <i class="bi bi-arrow-left"></i> Regresar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

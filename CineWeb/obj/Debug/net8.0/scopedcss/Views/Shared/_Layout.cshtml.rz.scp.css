@@ -1,48 +1,130 @@
-/* Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
-
-a.navbar-brand[b-zmcvr6e3kt] {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+/* --- Bootstrap dark overrides globales --- */
+:root[b-zmcvr6e3kt] {
+    /* Paleta cine */
+    --movies-bg: #0b0f17;
+    --movies-grad-1: #0f1a35;
+    --movies-grad-2: #1b2b5a;
+    --text-main: #e9eef6;
+    --text-muted: #a8b3cf;
+    /* Bootstrap variables (forzamos modo oscuro) */
+    --bs-body-bg: var(--movies-bg);
+    --bs-body-color: var(--text-main);
+    --bs-emphasis-color: var(--text-main);
+    --bs-border-color: #253255;
+    --bs-card-bg: #0d1525;
+    --bs-card-color: var(--text-main);
+    --bs-secondary-color: var(--text-muted);
 }
 
-a[b-zmcvr6e3kt] {
-  color: #0077cc;
+html[b-zmcvr6e3kt], body[b-zmcvr6e3kt] {
+    background-color: var(--bs-body-bg) !important;
+    color: var(--bs-body-color) !important;
 }
 
+/* Navbar degradado oscuro */
+.bg-movies[b-zmcvr6e3kt] {
+    background: linear-gradient(90deg, var(--movies-grad-1), var(--movies-grad-2));
+}
+
+.navbar.bg-movies .navbar-brand[b-zmcvr6e3kt],
+.navbar.bg-movies .nav-link[b-zmcvr6e3kt] {
+    color: #fff !important;
+    opacity: .95;
+}
+
+    .navbar.bg-movies .nav-link:hover[b-zmcvr6e3kt],
+    .navbar.bg-movies .nav-link:focus[b-zmcvr6e3kt] {
+        opacity: 1;
+    }
+
+/* Evitar bloques blancos por defecto */
+.container[b-zmcvr6e3kt], main[b-zmcvr6e3kt], .section[b-zmcvr6e3kt], .content[b-zmcvr6e3kt], .page[b-zmcvr6e3kt] {
+    background: transparent !important;
+}
+
+/* Forzar componentes oscuros */
+.card[b-zmcvr6e3kt], .list-group[b-zmcvr6e3kt], .table[b-zmcvr6e3kt], .modal-content[b-zmcvr6e3kt] {
+    background-color: var(--bs-card-bg) !important;
+    color: var(--bs-card-color) !important;
+    border-color: var(--bs-border-color) !important;
+}
+
+    .table thead th[b-zmcvr6e3kt] {
+        color: var(--text-muted);
+        border-color: var(--bs-border-color);
+    }
+
+/* Clases claras → a oscuro/transparente */
+.bg-white[b-zmcvr6e3kt], .bg-light[b-zmcvr6e3kt], .bg-body[b-zmcvr6e3kt], .bg-transparent[b-zmcvr6e3kt] {
+    background-color: transparent !important;
+    color: var(--bs-body-color) !important;
+}
+
+/* Formularios oscuros */
+.form-control[b-zmcvr6e3kt], .form-select[b-zmcvr6e3kt] {
+    background-color: #121b2e !important;
+    color: var(--text-main) !important;
+    border: 1px solid #253255 !important;
+}
+
+    .form-control[b-zmcvr6e3kt]::placeholder {
+        color: #97a5c0;
+    }
+
+/* Botones */
 .btn-primary[b-zmcvr6e3kt] {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    background-color: #2d5bff;
+    border-color: #2d5bff;
 }
 
-.nav-pills .nav-link.active[b-zmcvr6e3kt], .nav-pills .show > .nav-link[b-zmcvr6e3kt] {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+.btn-outline-light[b-zmcvr6e3kt] {
+    border-color: #e9eef6;
+    color: #e9eef6;
 }
 
-.border-top[b-zmcvr6e3kt] {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom[b-zmcvr6e3kt] {
-  border-bottom: 1px solid #e5e5e5;
+.btn-outline-secondary[b-zmcvr6e3kt] {
+    color: var(--text-muted);
+    border-color: #3b4a72;
 }
 
-.box-shadow[b-zmcvr6e3kt] {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+/* Tarjetas de película */
+.card-movie[b-zmcvr6e3kt] {
+    border: 0;
+    background: #0d1525;
+    color: var(--text-main);
+    box-shadow: 0 8px 24px rgba(0,0,0,.25);
+    transition: transform .2s ease, box-shadow .2s ease;
 }
 
-button.accept-policy[b-zmcvr6e3kt] {
-  font-size: 1rem;
-  line-height: inherit;
+    .card-movie:hover[b-zmcvr6e3kt] {
+        transform: translateY(-3px);
+        box-shadow: 0 14px 36px rgba(0,0,0,.35);
+    }
+
+    .card-movie .poster[b-zmcvr6e3kt] {
+        width: 100%;
+        height: 360px;
+        object-fit: cover;
+        border-radius: .5rem .5rem 0 0;
+        background: #10192e;
+    }
+
+    .card-movie .meta[b-zmcvr6e3kt] {
+        color: var(--text-muted);
+    }
+
+/* Validación MVC */
+.field-validation-error[b-zmcvr6e3kt] {
+    color: #ff6b6b;
 }
 
-.footer[b-zmcvr6e3kt] {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px;
+.input-validation-error[b-zmcvr6e3kt] {
+    border-color: #ff6b6b !important;
+}
+
+/* Footer */
+footer[b-zmcvr6e3kt] {
+    background: transparent;
+    color: var(--text-muted);
+    border-color: var(--bs-border-color);
 }

@@ -1,43 +1,40 @@
 ﻿@model CineWeb.Models.Actor
-
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Nuevo actor";
 }
 
-<h1>Create</h1>
+<h1 class="h4 mb-3 text-light"><i class="bi bi-plus-circle"></i> Nuevo actor</h1>
 
-<h4>Actor</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Nombre" class="control-label"></label>
-                <input asp-for="Nombre" class="form-control" />
-                <span asp-validation-for="Nombre" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Biografia" class="control-label"></label>
-                <input asp-for="Biografia" class="form-control" />
-                <span asp-validation-for="Biografia" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FechaNacimiento" class="control-label"></label>
-                <input asp-for="FechaNacimiento" class="form-control" />
-                <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+<form asp-action="Create" method="post" class="card card-body shadow-sm" style="background:#1b1b1b;border:1px solid #2a2a2a;">
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
+
+    <div class="mb-3">
+        <label asp-for="Nombre" class="form-label text-light"></label>
+        <input asp-for="Nombre" class="form-control bg-dark text-light border-secondary" autofocus />
+        <span asp-validation-for="Nombre" class="text-danger"></span>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <div class="mb-3">
+        <label asp-for="FechaNacimiento" class="form-label text-light"></label>
+        <input asp-for="FechaNacimiento" type="date" class="form-control bg-dark text-light border-secondary" />
+        <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Biografia" class="form-label text-light"></label>
+        <textarea asp-for="Biografia" rows="5" class="form-control bg-dark text-light border-secondary" maxlength="2000"></textarea>
+        <div class="form-text text-muted">Máx. 2000 caracteres.</div>
+        <span asp-validation-for="Biografia" class="text-danger"></span>
+    </div>
+
+    <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-primary">
+            <i class="bi bi-check2-circle"></i> Guardar
+        </button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
+    </div>
+</form>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <partial name="_ValidationScriptsPartial" />
 }
