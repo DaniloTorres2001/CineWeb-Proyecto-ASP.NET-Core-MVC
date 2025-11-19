@@ -1,0 +1,1 @@
+†RpC:\Users\USUARIO\Desktop\Full Stack Developer\Proyectos\CineWeb-Proyecto-ASP.NET-Core-MVC\CineWeb\CineWeb.csproj¢net8.0òCSharp12

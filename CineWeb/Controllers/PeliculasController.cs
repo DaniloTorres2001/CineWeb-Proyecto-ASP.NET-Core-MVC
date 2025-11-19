@@ -42,7 +42,10 @@ namespace CineWeb.Controllers
                 .Include(p => p.Director)
                 .Include(p => p.Actores).ThenInclude(pa => pa.Actor)
                 .AsQueryable();
-
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             // Filtros
             if (!string.IsNullOrWhiteSpace(q))
             {
@@ -171,6 +174,10 @@ namespace CineWeb.Controllers
         // GET: Peliculas/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             if (id == null) return NotFound();
 
             var pelicula = await _context.Peliculas
@@ -232,6 +239,10 @@ namespace CineWeb.Controllers
         // GET: Peliculas/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             if (id == null) return NotFound();
 
             var pelicula = await _context.Peliculas
@@ -314,6 +325,10 @@ namespace CineWeb.Controllers
         // GET: Peliculas/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             if (id == null) return NotFound();
 
             var pelicula = await _context.Peliculas
@@ -331,6 +346,10 @@ namespace CineWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var pelicula = await _context.Peliculas.FindAsync(id);
             if (pelicula != null)
             {

@@ -21,6 +21,12 @@ namespace CineWeb.Controllers
         // /Directors/Peliculas/5?q=matrix
         public async Task<IActionResult> Peliculas(int id, string? q)
         {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var director = await _context.Directores
                 .AsNoTracking()
                 .FirstOrDefaultAsync(d => d.Id == id);
@@ -73,6 +79,11 @@ namespace CineWeb.Controllers
         // GET: Directors/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             if (id == null) return NotFound();
 
             var director = await _context.Directores
@@ -111,6 +122,12 @@ namespace CineWeb.Controllers
         // GET: Directors/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -131,6 +148,11 @@ namespace CineWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Nacionalidad,FechaNacimiento")] Director director)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             if (id != director.Id)
             {
                 return NotFound();
@@ -162,6 +184,11 @@ namespace CineWeb.Controllers
         // GET: Directors/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -183,6 +210,11 @@ namespace CineWeb.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var director = await _context.Directores.FindAsync(id);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             if (director != null)
             {
                 _context.Directores.Remove(director);

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "K19wdXgT+Qc=",
+  "dgSpecHash": "evB4Zf3fnVQ=",
   "success": true,
-  "projectFilePath": "C:\\Users\\USUARIO\\Desktop\\Full Stack Developer\\Proyectos\\CineWeb\\CineWeb\\CineWeb.csproj",
+  "projectFilePath": "C:\\Users\\USUARIO\\Desktop\\Full Stack Developer\\Proyectos\\CineWeb-Proyecto-ASP.NET-Core-MVC\\CineWeb\\CineWeb.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\USUARIO\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\USUARIO\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",

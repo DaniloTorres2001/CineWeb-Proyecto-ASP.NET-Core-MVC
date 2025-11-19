@@ -45,6 +45,10 @@ namespace CineWeb.Controllers
         // GET: Generoes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             if (id == null)
             {
                 return NotFound();
@@ -64,6 +68,10 @@ namespace CineWeb.Controllers
 
         public async Task<IActionResult> Peliculas(int id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var genero = await _context.Generos.FindAsync(id);
             if (genero == null) return NotFound();
 
@@ -102,6 +110,10 @@ namespace CineWeb.Controllers
         // GET: Generoes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             if (id == null)
             {
                 return NotFound();
@@ -122,6 +134,7 @@ namespace CineWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Descripcion")] Genero genero)
         {
+
             if (id != genero.Id)
             {
                 return NotFound();
@@ -153,6 +166,10 @@ namespace CineWeb.Controllers
         // GET: Generoes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             if (id == null)
             {
                 return NotFound();
@@ -173,6 +190,10 @@ namespace CineWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var genero = await _context.Generos.FindAsync(id);
             if (genero != null)
             {

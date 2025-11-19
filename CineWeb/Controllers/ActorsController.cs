@@ -46,7 +46,15 @@ namespace CineWeb.Controllers
 
         // GET: Actors/Details/5
         public async Task<IActionResult> Details(int? id)
+
+
         {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             if (id == null) return NotFound();
 
             var actor = await _context.Actores
@@ -72,7 +80,11 @@ namespace CineWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Nombre,Biografia,FechaNacimiento")] Actor actor)
         {
-            if (!ModelState.IsValid) return View(actor);
+            if (!ModelState.IsValid)
+            {
+                return View(actor);
+            }
+
 
             _context.Add(actor);
             await _context.SaveChangesAsync();
@@ -82,6 +94,11 @@ namespace CineWeb.Controllers
         // GET: Actors/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             if (id == null) return NotFound();
 
             var actor = await _context.Actores.FindAsync(id);
@@ -114,6 +131,11 @@ namespace CineWeb.Controllers
         // GET: Actors/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             if (id == null) return NotFound();
 
             var actor = await _context.Actores
@@ -130,7 +152,12 @@ namespace CineWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if (!ModelState.IsValid)
+                {
+                return BadRequest(ModelState);
+            }
             var actor = await _context.Actores.FindAsync(id);
+
             if (actor != null)
             {
                 _context.Actores.Remove(actor);

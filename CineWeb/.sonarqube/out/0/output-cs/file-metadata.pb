@@ -1,0 +1,22 @@
+õ
+èC:\Users\USUARIO\Desktop\Full Stack Developer\Proyectos\CineWeb-Proyecto-ASP.NET-Core-MVC\CineWeb\obj\Debug\net8.0\CineWeb.RazorAssemblyInfo.csutf-8ñ
+äC:\Users\USUARIO\Desktop\Full Stack Developer\Proyectos\CineWeb-Proyecto-ASP.NET-Core-MVC\CineWeb\obj\Debug\net8.0\CineWeb.AssemblyInfo.csutf-8≠
+°C:\Users\USUARIO\Desktop\Full Stack Developer\Proyectos\CineWeb-Proyecto-ASP.NET-Core-MVC\CineWeb\obj\Debug\net8.0\.NETCoreApp,Version=v8.0.AssemblyAttributes.csutf-8ò
+åC:\Users\USUARIO\Desktop\Full Stack Developer\Proyectos\CineWeb-Proyecto-ASP.NET-Core-MVC\CineWeb\obj\Debug\net8.0\CineWeb.GlobalUsings.g.csutf-8ç
+ÉC:\Users\USUARIO\Desktop\Full Stack Developer\Proyectos\CineWeb-Proyecto-ASP.NET-Core-MVC\CineWeb\ViewsModels\PeliculasFiltrosVM.csutf-8u
+lC:\Users\USUARIO\Desktop\Full Stack Developer\Proyectos\CineWeb-Proyecto-ASP.NET-Core-MVC\CineWeb\Program.csutf-8Ç
+yC:\Users\USUARIO\Desktop\Full Stack Developer\Proyectos\CineWeb-Proyecto-ASP.NET-Core-MVC\CineWeb\Models\PeliculaActor.csutf-8}
+tC:\Users\USUARIO\Desktop\Full Stack Developer\Proyectos\CineWeb-Proyecto-ASP.NET-Core-MVC\CineWeb\Models\Pelicula.csutf-8{
+rC:\Users\USUARIO\Desktop\Full Stack Developer\Proyectos\CineWeb-Proyecto-ASP.NET-Core-MVC\CineWeb\Models\Genero.csutf-8É
+zC:\Users\USUARIO\Desktop\Full Stack Developer\Proyectos\CineWeb-Proyecto-ASP.NET-Core-MVC\CineWeb\Models\ErrorViewModel.csutf-8}
+tC:\Users\USUARIO\Desktop\Full Stack Developer\Proyectos\CineWeb-Proyecto-ASP.NET-Core-MVC\CineWeb\Models\Director.csutf-8z
+qC:\Users\USUARIO\Desktop\Full Stack Developer\Proyectos\CineWeb-Proyecto-ASP.NET-Core-MVC\CineWeb\Models\Actor.csutf-8ï
+âC:\Users\USUARIO\Desktop\Full Stack Developer\Proyectos\CineWeb-Proyecto-ASP.NET-Core-MVC\CineWeb\Migrations\AppDbContextModelSnapshot.csutf-8õ
+èC:\Users\USUARIO\Desktop\Full Stack Developer\Proyectos\CineWeb-Proyecto-ASP.NET-Core-MVC\CineWeb\Migrations\20251014022815_Inicial.Designer.csutf-8ê
+ÜC:\Users\USUARIO\Desktop\Full Stack Developer\Proyectos\CineWeb-Proyecto-ASP.NET-Core-MVC\CineWeb\Migrations\20251014022815_Inicial.csutf-8
+vC:\Users\USUARIO\Desktop\Full Stack Developer\Proyectos\CineWeb-Proyecto-ASP.NET-Core-MVC\CineWeb\Data\AppDbContext.csutf-8é
+ÑC:\Users\USUARIO\Desktop\Full Stack Developer\Proyectos\CineWeb-Proyecto-ASP.NET-Core-MVC\CineWeb\Controllers\PeliculasController.csutf-8à
+C:\Users\USUARIO\Desktop\Full Stack Developer\Proyectos\CineWeb-Proyecto-ASP.NET-Core-MVC\CineWeb\Controllers\HomeController.csutf-8ç
+ÉC:\Users\USUARIO\Desktop\Full Stack Developer\Proyectos\CineWeb-Proyecto-ASP.NET-Core-MVC\CineWeb\Controllers\GeneroesController.csutf-8é
+ÑC:\Users\USUARIO\Desktop\Full Stack Developer\Proyectos\CineWeb-Proyecto-ASP.NET-Core-MVC\CineWeb\Controllers\DirectorsController.csutf-8ã
+ÅC:\Users\USUARIO\Desktop\Full Stack Developer\Proyectos\CineWeb-Proyecto-ASP.NET-Core-MVC\CineWeb\Controllers\ActorsController.csutf-8
